@@ -1,600 +1,264 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MOR VPN — اینترنت آزاد و امن</title>
-<meta name="description" content="MOR VPN؛ اتصال سریع، پایدار و خصوصی با پروتکل‌های VLESS و Trojan. بدون ثبت لاگ، بدون قطعی.">
-<meta name="theme-color" content="#04060c">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MOR VPN — Next-Gen Secure Tunnel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Orbitron:wght@700;900&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <style>
-:root{
-  --bg:#04060c;--panel:rgba(16,24,44,.72);--panel-2:rgba(11,17,34,.86);
-  --line:rgba(150,180,235,.16);--line-soft:rgba(150,180,235,.08);
-  --blue:#1a6fff;--cyan:#35d6ff;
-  --ink:#eef3fd;--ink-dim:#9aa8c6;--ink-dimmer:#5d6884;
-  --radius:20px;
-  --fa:'Vazirmatn',Tahoma,sans-serif;
-  --orb:'Orbitron',sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--fa);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-img,svg{display:block;max-width:100%}
-section{position:relative;z-index:2}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-::selection{background:var(--blue);color:#fff}
-
-/* Background */
-#bg-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.55}
-.blob{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none}
-.blob-1{width:600px;height:600px;top:-220px;right:-180px;background:radial-gradient(circle,rgba(31,107,255,.45),transparent 68%);animation:drift1 20s ease-in-out infinite}
-.blob-2{width:500px;height:500px;bottom:-200px;left:-150px;background:radial-gradient(circle,rgba(53,214,255,.28),transparent 68%);animation:drift2 26s ease-in-out infinite}
-@keyframes drift1{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-60px,50px,0) scale(1.1)}}
-@keyframes drift2{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(70px,-50px,0) scale(1.08)}}
-
-/* Logo */
-.logo{display:flex;align-items:center;gap:12px}
-.logo-img{height:40px;width:auto;flex:none;filter:drop-shadow(0 0 10px rgba(31,107,255,.65)) drop-shadow(0 0 24px rgba(53,214,255,.4));transition:filter .3s}
-.logo-img:hover{filter:drop-shadow(0 0 18px rgba(31,107,255,.9)) drop-shadow(0 0 36px rgba(53,214,255,.6))}
-.logo-wordmark{display:flex;flex-direction:column;line-height:1;gap:3px}
-.logo-wordmark-text{font-family:var(--orb);font-weight:900;font-size:21px;letter-spacing:.08em;line-height:1}
-.wm-mor{background:linear-gradient(180deg,#fff 0%,#c8d8f0 45%,#8aaad4 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.wm-vpn{background:linear-gradient(180deg,#7eebff 0%,#35d6ff 45%,#1a6fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.logo-sub{font-family:var(--orb);font-size:7px;letter-spacing:.35em;color:rgba(53,214,255,.55);text-transform:uppercase}
-
-/* Nav */
-.nav{position:sticky;top:0;z-index:60;background:rgba(4,6,12,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--line-soft);transition:background .3s,border-color .3s}
-.nav.scrolled{background:rgba(4,6,12,.9);border-color:var(--line)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px}
-.nav-links{display:flex;align-items:center;gap:30px;font-size:15px;color:var(--ink-dim)}
-.nav-links a{position:relative;transition:color .2s}
-.nav-links a::after{content:"";position:absolute;bottom:-5px;right:0;width:0;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .25s}
-.nav-links a:hover{color:var(--ink)}
-.nav-links a:hover::after{width:100%}
-.nav-right{display:flex;align-items:center;gap:10px}
-.nav-cta{padding:10px 22px;border-radius:999px;background:linear-gradient(92deg,var(--blue),var(--cyan));color:#03080f;font-weight:700;font-size:14px;box-shadow:0 8px 22px -8px rgba(53,214,255,.7);transition:transform .2s,box-shadow .2s}
-.nav-cta:hover{transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(53,214,255,.88)}
-.burger{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03);align-items:center;justify-content:center;cursor:pointer}
-.burger span{display:block;width:17px;height:2px;background:var(--ink);border-radius:2px;position:relative}
-.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:17px;height:2px;background:var(--ink);border-radius:2px}
-.burger span::before{top:-6px}.burger span::after{top:6px}
-.mobile-menu{display:none;flex-direction:column;gap:6px;padding:10px 24px 20px}
-.mobile-menu.open{display:flex}
-.mobile-menu a{padding:11px 14px;border-radius:12px;background:var(--panel-2);border:1px solid var(--line-soft);color:var(--ink-dim)}
-
-/* Hero */
-.hero{padding:84px 0 72px}
-.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--orb);font-weight:700;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan)}
-.eyebrow::before{content:"";width:24px;height:1px;background:var(--cyan);opacity:.7}
-h1,h2,h3,h4{font-weight:800;letter-spacing:-.01em}
-.hero-text h1{font-size:clamp(30px,4.2vw,54px);line-height:1.26;margin:16px 0 18px}
-.accent{background:linear-gradient(92deg,var(--cyan),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-text p{color:var(--ink-dim);font-size:17px;max-width:500px;margin-bottom:28px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
-.btn svg{width:17px;height:17px;flex:none}
-.btn-primary{background:linear-gradient(92deg,var(--blue),var(--cyan));color:#03080f;box-shadow:0 14px 34px -12px rgba(53,214,255,.75)}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 40px -12px rgba(53,214,255,.9)}
-.btn-ghost{border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
-.btn-ghost:hover{border-color:rgba(53,214,255,.5);background:rgba(53,214,255,.06)}
-.hero-badges{display:flex;flex-wrap:wrap;gap:9px}
-.badge{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);font-size:13px;color:var(--ink-dim);backdrop-filter:blur(8px)}
-.badge svg{width:13px;height:13px;color:var(--cyan);flex:none}
-.badge b{color:var(--ink);font-weight:600}
-
-/* Hero Art */
-.hero-art{position:relative;display:flex;align-items:center;justify-content:center;min-height:460px}
-.ring{position:absolute;border-radius:50%;border:1px solid rgba(53,214,255,.3);animation:pulsering 4s cubic-bezier(.15,.65,.25,1) infinite}
-.ring:nth-of-type(2){animation-delay:1.33s;border-color:rgba(31,107,255,.25)}
-.ring:nth-of-type(3){animation-delay:2.66s;border-color:rgba(53,214,255,.15)}
-@keyframes pulsering{0%{width:140px;height:140px;opacity:.85}100%{width:520px;height:520px;opacity:0}}
-.orbit{position:absolute;border-radius:50%;border:1px dashed rgba(150,180,235,.18);animation:spin 32s linear infinite}
-.orbit-1{width:400px;height:400px}
-.orbit-2{width:290px;height:290px;animation-duration:20s;animation-direction:reverse;border-style:solid;border-color:rgba(53,214,255,.12)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.orbit::before{content:"";position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px 5px rgba(53,214,255,.85)}
-.orbit-2::before{background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.55)}
-.hero-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(31,107,255,.4),transparent 68%);filter:blur(16px);animation:glowPulse 4s ease-in-out infinite}
-@keyframes glowPulse{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:.95;transform:scale(1.07)}}
-.hero-logo-wrap{position:relative;z-index:3;animation:float 6s ease-in-out infinite}
-.hero-logo-img{width:min(250px,60vw);height:auto;filter:drop-shadow(0 0 26px rgba(31,107,255,.75)) drop-shadow(0 0 60px rgba(53,214,255,.4)) drop-shadow(0 36px 70px rgba(0,0,0,.65))}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
-
-/* Trust bar */
-.trust{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:22px 0;background:rgba(7,11,22,.65);backdrop-filter:blur(8px)}
-.trust-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 34px;color:var(--ink-dimmer);font-size:14px}
-.trust-inner span{display:flex;align-items:center;gap:7px}
-.trust-inner svg{width:15px;height:15px;color:var(--cyan)}
-.trust-inner b{color:var(--ink-dim);font-weight:600}
-
-/* Section head */
-.sec-head{max-width:620px;margin:0 auto 48px;text-align:center}
-.sec-head h2{font-size:clamp(25px,3.2vw,38px);margin:14px 0 12px}
-.sec-head p{color:var(--ink-dim);font-size:15.5px}
-
-/* Features */
-.features{padding:100px 0 88px}
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.fcard{position:relative;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s}
-.fcard::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(53,214,255,.12),transparent 70%);opacity:0;transition:opacity .3s}
-.fcard::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(53,214,255,.45),transparent);opacity:0;transition:opacity .3s}
-.fcard:hover{transform:translateY(-8px);border-color:rgba(53,214,255,.45);box-shadow:0 26px 52px -22px rgba(31,107,255,.7)}
-.fcard:hover::before,.fcard:hover::after{opacity:1}
-.ficon{width:48px;height:48px;border-radius:14px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(31,107,255,.25),rgba(53,214,255,.07));border:1px solid rgba(53,214,255,.25)}
-.ficon svg{width:22px;height:22px;color:var(--cyan)}
-.fcard h3{font-size:17px;margin-bottom:8px}
-.fcard p{color:var(--ink-dim);font-size:14px;line-height:1.8}
-
-/* Tech section */
-.deep{padding:0 0 100px}
-.deep-panel{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;background:radial-gradient(ellipse at top left,rgba(31,107,255,.15),transparent 55%),var(--panel-2);border:1px solid var(--line);border-radius:26px;padding:52px;overflow:hidden}
-.deep-list{display:flex;flex-direction:column;gap:22px}
-.deep-item{display:flex;gap:14px}
-.deep-num{flex:none;width:40px;height:40px;border-radius:11px;background:rgba(53,214,255,.08);border:1px solid rgba(53,214,255,.28);display:flex;align-items:center;justify-content:center;font-family:var(--orb);font-weight:700;color:var(--cyan);font-size:12px}
-.deep-item h4{font-size:15.5px;margin-bottom:5px}
-.deep-item p{color:var(--ink-dim);font-size:14px}
-.terminal{background:#05080f;border:1px solid var(--line);border-radius:16px;padding:22px;font-family:'Space Grotesk',monospace;font-size:12.5px;direction:ltr;text-align:left;color:#8fa8cc;box-shadow:0 30px 60px -28px rgba(0,0,0,.9)}
-.term-dots{display:flex;gap:6px;margin-bottom:16px}
-.term-dots span{width:11px;height:11px;border-radius:50%}
-.term-dots span:nth-child(1){background:#ff5f57}
-.term-dots span:nth-child(2){background:#febc2e}
-.term-dots span:nth-child(3){background:#28c840}
-.term-body{min-height:180px;white-space:pre-wrap;line-height:2}
-.term-body .tag{color:var(--cyan)}
-.term-body .ok{color:#4ade80}
-.cursor{display:inline-block;width:7px;height:14px;background:var(--cyan);vertical-align:-2px;animation:blink 1s step-end infinite}
-@keyframes blink{50%{opacity:0}}
-
-/* Stats */
-.stats{padding:0 0 100px}
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat-card{border:1px solid var(--line);border-radius:var(--radius);padding:30px 20px;text-align:center;background:var(--panel);backdrop-filter:blur(10px);transition:border-color .3s,transform .3s}
-.stat-card:hover{border-color:rgba(53,214,255,.38);transform:translateY(-4px)}
-.stat-card .num{font-family:var(--orb);font-weight:700;font-size:clamp(22px,2.6vw,32px)}
-.stat-card .num span{color:var(--cyan)}
-.stat-card .lbl{color:var(--ink-dim);font-size:13.5px;margin-top:7px}
-
-/* CTA */
-.cta{padding:0 0 110px}
-.cta-box{position:relative;overflow:hidden;border-radius:28px;padding:72px 36px;text-align:center;background:linear-gradient(160deg,#0c2040,#050810 60%);border:1px solid rgba(53,214,255,.25)}
-.cta-box::before{content:"";position:absolute;inset:-40% -20% auto -20%;height:340px;background:radial-gradient(circle,rgba(31,107,255,.42),transparent 65%);filter:blur(36px)}
-.cta-box>*{position:relative}
-.cta-box h2{font-size:clamp(24px,3.2vw,38px);margin-bottom:12px}
-.cta-box p{color:var(--ink-dim);max-width:460px;margin:0 auto 30px}
-.cta-logo{width:80px;height:auto;margin:0 auto 24px;filter:drop-shadow(0 0 18px rgba(31,107,255,.75)) drop-shadow(0 0 44px rgba(53,214,255,.38));animation:float 5s ease-in-out infinite}
-
-/* Download */
-#download{padding:90px 0 120px;border-top:1px solid var(--line-soft);background:rgba(7,11,22,.55)}
-.dl-hero{text-align:center;margin-bottom:50px}
-.dl-mark{position:relative;width:160px;height:160px;margin:0 auto 24px;display:flex;align-items:center;justify-content:center}
-.dl-mark .glow{position:absolute;inset:-24px;border-radius:50%;background:radial-gradient(circle,rgba(31,107,255,.45),transparent 70%);filter:blur(10px);animation:breathe 3s ease-in-out infinite}
-@keyframes breathe{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.1)}}
-.dl-mark-img{position:relative;width:136px;height:auto;z-index:2;filter:drop-shadow(0 0 18px rgba(31,107,255,.65)) drop-shadow(0 8px 26px rgba(0,0,0,.55))}
-.dl-hero h2{font-size:clamp(26px,3.6vw,40px);margin:14px 0}
-.dl-hero p{color:var(--ink-dim);font-size:16px;max-width:440px;margin:0 auto}
-.dl-wordmark{font-family:var(--orb);font-weight:900;font-size:clamp(26px,3.6vw,40px);letter-spacing:.08em;display:inline-flex;align-items:baseline;margin:0 6px}
-.dl-card{max-width:540px;margin:0 auto 26px;background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-radius:22px;padding:36px;text-align:center;backdrop-filter:blur(12px)}
-.dl-meta{display:flex;justify-content:center;gap:26px;margin-bottom:24px;flex-wrap:wrap}
-.dl-meta .lbl{font-size:10.5px;color:var(--ink-dimmer);font-family:var(--orb);letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
-.dl-meta .val{font-size:14px;font-weight:600}
-.btn-download{display:inline-flex;align-items:center;justify-content:center;gap:11px;width:100%;padding:19px 28px;border-radius:16px;font-weight:700;font-size:16px;background:linear-gradient(92deg,var(--blue),var(--cyan));color:#03080f;box-shadow:0 16px 38px -12px rgba(53,214,255,.7);transition:transform .2s,box-shadow .2s}
-.btn-download:hover{transform:translateY(-3px);box-shadow:0 22px 46px -12px rgba(53,214,255,.9)}
-.btn-download svg{width:19px;height:19px}
-.dl-note{color:var(--ink-dimmer);font-size:12px;margin-top:16px}
-.dl-badges{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:58px}
-
-/* Steps */
-.steps h3{text-align:center;font-size:21px;margin-bottom:30px}
-.step-list{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:0 auto 64px}
-.step{display:flex;align-items:flex-start;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;transition:border-color .25s,transform .25s}
-.step:hover{border-color:rgba(53,214,255,.38);transform:translateX(-5px)}
-.step-num{flex:none;width:36px;height:36px;border-radius:10px;background:rgba(53,214,255,.09);border:1px solid rgba(53,214,255,.28);display:flex;align-items:center;justify-content:center;font-family:var(--orb);font-weight:700;color:var(--cyan);font-size:12px}
-.step h4{font-size:15px;margin-bottom:3px}
-.step p{color:var(--ink-dim);font-size:13.5px}
-
-/* FAQ */
-.faq{max-width:720px;margin:0 auto}
-.faq h3{text-align:center;font-size:21px;margin-bottom:28px}
-.faq details{border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-bottom:10px;overflow:hidden;transition:border-color .2s}
-.faq details[open]{border-color:rgba(53,214,255,.32)}
-.faq summary{cursor:pointer;padding:18px 20px;font-weight:600;font-size:15px;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";color:var(--cyan);font-family:var(--orb);font-size:19px;line-height:1}
-.faq details[open] summary::after{content:"–"}
-.faq p{padding:0 20px 20px;color:var(--ink-dim);font-size:14px}
-
-/* Footer */
-footer{border-top:1px solid var(--line-soft);padding:44px 0;background:var(--bg);position:relative;z-index:2}
-.foot-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
-.foot-links{display:flex;gap:24px;font-size:14px;color:var(--ink-dim);flex-wrap:wrap}
-.foot-links a:hover{color:var(--ink)}
-.foot-copy{color:var(--ink-dimmer);font-size:13px}
-.foot-logo-img{height:33px;width:auto;filter:drop-shadow(0 0 7px rgba(31,107,255,.45))}
-
-/* Reveal */
-[data-reveal]{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
-[data-reveal].in{opacity:1;transform:none}
-
-/* Responsive */
-@media(max-width:960px){
-  .hero-inner{grid-template-columns:1fr;text-align:center}
-  .hero-text p{margin-left:auto;margin-right:auto}
-  .hero-actions,.hero-badges{justify-content:center}
-  .hero-art{order:-1;min-height:340px}
-  .feature-grid{grid-template-columns:repeat(2,1fr)}
-  .deep-panel{grid-template-columns:1fr;padding:34px 24px}
-  .stat-row{grid-template-columns:repeat(2,1fr)}
-  .nav-links{display:none}
-  .burger{display:flex}
-}
-@media(max-width:540px){
-  .feature-grid{grid-template-columns:1fr}
-  .cta-box{padding:48px 20px}
-  .logo-sub{display:none}
-}
-@media(prefers-reduced-motion:reduce){
-  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition:none !important}
-  html{scroll-behavior:auto}
-}
+:root{--primary:#0A84FF;--primary-light:#2DA8FF;--cyan:#4CC9FF;--ice:#EAF6FF;--white:#FFFFFF;--bg:#061423;--bg-surface:rgba(13,27,48,0.75);--bg-surface-solid:#0d1b30;--border:rgba(76,201,255,0.18);--border-glow:rgba(10,132,255,0.4);--text:#EAF6FF;--text-dim:#8FA8CC;--radius-lg:32px;--radius-md:20px;--radius-sm:14px;--ease-out:cubic-bezier(0.23,1,0.32,1)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden;position:relative}
+.bg-mesh{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 10% 20%,rgba(10,132,255,0.15) 0%,transparent 40%),radial-gradient(circle at 90% 80%,rgba(76,201,255,0.12) 0%,transparent 40%),radial-gradient(circle at 50% 50%,rgba(6,20,35,0.9) 0%,#030a14 100%)}
+.ambient-glow{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(10,132,255,0.25),transparent 70%);filter:blur(60px);z-index:0;pointer-events:none;animation:floatGlow 10s ease-in-out infinite alternate}
+@keyframes floatGlow{0%{transform:scale(0.9);opacity:0.7}100%{transform:scale(1.15);opacity:1}}
+.phone-frame{width:412px;height:870px;background:var(--bg-surface-solid);border-radius:44px;box-shadow:0 0 0 12px #02060c,0 0 0 14px rgba(76,201,255,0.2),0 30px 60px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.15);position:relative;z-index:10;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(76,201,255,0.25)}
+.status-bar{height:44px;padding:0 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:var(--ice);z-index:50;background:rgba(6,20,35,0.5);backdrop-filter:blur(10px)}
+.status-bar .icons{display:flex;gap:6px;align-items:center}
+.screen-container{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:20px 24px;overflow-y:auto;opacity:0;pointer-events:none;transform:scale(0.96) translateY(10px);transition:all 0.4s cubic-bezier(0.16,1,0.3,1);background:var(--bg);z-index:1}
+.screen.active{opacity:1;pointer-events:auto;transform:scale(1) translateY(0);z-index:2}
+.screen::-webkit-scrollbar{width:4px}
+.screen::-webkit-scrollbar-thumb{background:rgba(76,201,255,0.2);border-radius:4px}
+.app-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.logo-area{display:flex;align-items:center;gap:12px}
+.brand-logo{width:36px;height:36px;filter:drop-shadow(0 0 10px rgba(10,132,255,0.8))}
+.brand-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.05em;background:linear-gradient(180deg,#FFFFFF 0%,#4CC9FF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.icon-btn{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--ice);cursor:pointer;transition:all 0.2s ease;backdrop-filter:blur(10px)}
+.icon-btn:hover{background:rgba(10,132,255,0.15);border-color:var(--primary);transform:scale(1.05)}
+.icon-btn:active{transform:scale(0.95)}
+.glass-card{background:var(--bg-surface);border:1px solid var(--border);backdrop-filter:blur(20px);border-radius:var(--radius-md);padding:20px;position:relative;overflow:hidden;box-shadow:0 16px 32px rgba(0,0,0,0.3);transition:all 0.3s cubic-bezier(0.16,1,0.3,1)}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(76,201,255,0.4),transparent)}
+.glass-card:hover{border-color:var(--primary-light);transform:translateY(-2px);box-shadow:0 20px 40px rgba(10,132,255,0.15)}
+.connect-centerpiece{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin:10px 0}
+.logo-wrap{position:relative;display:flex;margin-bottom:24px}
+.connect-logo-img{width:248px;height:248px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 10px 24px rgba(0,0,0,0.45))}
+@media(hover:hover)and(pointer:fine){.connect-logo-img{width:268px;height:268px}}
+.logo-glow{position:absolute;inset:-38px;border-radius:50%;pointer-events:none;opacity:0;z-index:0;background:radial-gradient(circle,rgba(0,215,255,0.7) 0%,rgba(0,160,255,0.32) 42%,rgba(0,120,255,0) 68%);filter:blur(6px);transition:opacity 0.7s ease}
+.connect-centerpiece.connected .logo-glow{opacity:1;animation:glowBreath 3.2s ease-in-out infinite}
+@keyframes glowBreath{0%,100%{transform:scale(0.9);opacity:0.32}50%{transform:scale(1.1);opacity:0.92}}
+.connect-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:34px;letter-spacing:0.1em;line-height:1;margin-bottom:36px;text-transform:uppercase}
+.t-mor{color:#FFFFFF}.t-vpn{color:#4CC9FF}
+.switch-container{position:relative;display:flex;flex-direction:column;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.switch-container:focus-visible .switch-track{box-shadow:0 0 0 4px rgba(34,197,94,0.6),0 8px 24px rgba(0,0,0,0.45),inset 0 2px 6px rgba(0,0,0,0.4)}
+.switch-track{position:relative;width:252px;height:84px;border-radius:42px;padding:7px;box-sizing:border-box;overflow:hidden;background:radial-gradient(150% 160% at 22% 0%,rgba(255,255,255,0.08),rgba(255,255,255,0) 45%),linear-gradient(160deg,#16233f 0%,#0d1830 55%,#070e1e 100%);border:1px solid rgba(150,170,255,0.22);box-shadow:inset 0 3px 8px rgba(0,0,0,0.5),inset 0 -2px 6px rgba(150,190,255,0.06),0 12px 28px rgba(0,0,0,0.45),0 0 24px rgba(90,110,255,0.12);transition:border-color 0.5s ease,box-shadow 0.5s ease,background 0.5s ease}
+.switch-fill{position:absolute;inset:7px;border-radius:35px;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#22e6ff 0%,#2f8cff 55%,#6f5bff 100%);opacity:0.9;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1),background 0.5s ease;pointer-events:none}
+.switch-dot{position:absolute;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#8fa8cc;opacity:0.3;transition:background 0.4s ease,opacity 0.4s ease,box-shadow 0.4s ease;pointer-events:none;z-index:2}
+.switch-dot.left{left:30px}.switch-dot.right{right:30px}
+.switch-knob{position:relative;z-index:3;width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e8483c;background:radial-gradient(120% 130% at 30% 16%,#ffffff 0%,rgba(255,255,255,0) 46%),linear-gradient(160deg,#ffffff 0%,#eef2ff 60%,#d8e0f4 100%);border:1px solid rgba(255,255,255,0.85);box-shadow:inset 0 2px 4px rgba(255,255,255,0.9),inset 0 -10px 18px rgba(120,140,200,0.25),inset 0 0 0 1px rgba(0,0,0,0.04),0 8px 20px rgba(0,0,0,0.5),0 0 22px rgba(255,70,60,0.45);transition:transform 0.5s cubic-bezier(0.34,1.4,0.4,1),background 0.45s ease,border-color 0.45s ease,color 0.45s ease,box-shadow 0.45s ease}
+.switch-knob svg{width:28px;height:28px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.35))}
+.switch-container.connecting .switch-knob,.switch-container.connected .switch-knob{transform:translateX(172px)}
+.switch-container.connecting .switch-fill{transform:scaleX(1)}
+.switch-container.connecting .switch-track{border-color:rgba(76,201,255,0.5);box-shadow:inset 0 3px 8px rgba(0,0,0,0.35),0 12px 28px rgba(0,0,0,0.4),0 0 30px rgba(76,201,255,0.30)}
+.switch-container.connecting .switch-knob{color:#f5b20a;background:radial-gradient(120% 130% at 30% 14%,#ffffff 0%,rgba(255,255,255,0) 48%),linear-gradient(160deg,#ffffff 0%,#f4f6fb 60%,#dde2ef 100%);border-color:rgba(255,255,255,0.9);box-shadow:inset 0 2px 4px rgba(255,255,255,0.9),inset 0 -10px 18px rgba(120,140,200,0.22),0 8px 20px rgba(0,0,0,0.45),0 0 26px rgba(255,190,40,0.65);animation:knobPulse 1.3s ease-in-out infinite}
+@keyframes knobPulse{0%,100%{box-shadow:inset 0 2px 4px rgba(255,255,255,0.9),inset 0 -10px 18px rgba(120,140,200,0.22),0 8px 20px rgba(0,0,0,0.45),0 0 22px rgba(255,190,40,0.55)}50%{box-shadow:inset 0 2px 4px rgba(255,255,255,0.9),inset 0 -10px 18px rgba(120,140,200,0.22),0 8px 20px rgba(0,0,0,0.45),0 0 42px rgba(255,200,60,1)}}
+.switch-container.connecting .switch-dot.left,.switch-container.connected .switch-dot.left{background:rgba(140,190,240,0.6);opacity:0.25}
+.switch-container.connecting .switch-dot.right,.switch-container.connected .switch-dot.right{background:#7ee7ff;opacity:0.95;box-shadow:0 0 12px rgba(0,200,255,0.8)}
+.switch-container:not(.connecting):not(.connected) .switch-dot.left{background:#8f9bff;opacity:0.95;box-shadow:0 0 12px rgba(120,130,255,0.9)}
+.switch-container:not(.connecting):not(.connected) .switch-dot.right{background:rgba(150,175,255,0.35);opacity:0.25}
+.switch-container.connected .switch-fill{transform:scaleX(1);background:linear-gradient(90deg,#00d6ff 0%,#0aa5ff 55%,#5a5bff 100%);opacity:1}
+.switch-container.connected .switch-track{border-color:rgba(140,215,255,0.7);box-shadow:inset 0 3px 8px rgba(0,30,70,0.5),0 12px 28px rgba(0,0,0,0.3),0 0 36px rgba(76,201,255,0.50)}
+.switch-container.connected .switch-knob{color:#0a8cff;background:radial-gradient(120% 130% at 30% 12%,#ffffff 0%,rgba(255,255,255,0) 48%),linear-gradient(160deg,#ffffff 0%,#f4f6fb 60%,#dde2ef 100%);border-color:rgba(255,255,255,0.95);box-shadow:inset 0 2px 4px rgba(255,255,255,0.95),inset 0 -10px 18px rgba(120,140,200,0.22),0 8px 20px rgba(0,0,0,0.4),0 0 30px rgba(0,150,255,0.65);animation:none}
+.connect-label{margin-top:20px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.24em;color:#ffb3b6;text-transform:uppercase;transition:color 0.4s ease}
+.switch-container.connecting .connect-label{color:#ffd76a}
+.switch-container.connected .connect-label{color:#9fe3ff}
+@media(hover:hover)and(pointer:fine){.switch-container:hover .switch-knob{border-color:rgba(190,205,255,0.55)}.switch-container.connected:hover .switch-track{border-color:rgba(170,225,255,0.9)}}
+.connection-status-text{text-align:center;margin-top:12px;font-size:15px;font-weight:600;color:var(--text-dim);letter-spacing:0.02em}
+.connection-status-text.connected{color:var(--cyan);text-shadow:0 0 10px rgba(76,201,255,0.4)}
+.server-card{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s ease;margin-bottom:16px}
+.server-card:hover{background:rgba(10,132,255,0.1);border-color:var(--primary);transform:translateY(-2px)}
+.server-info{display:flex;align-items:center;gap:14px}
+.server-flag{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;box-shadow:0 4px 12px rgba(10,132,255,0.3)}
+.server-details h4{font-size:15px;font-weight:600;color:var(--ice)}
+.server-details p{font-size:12px;color:var(--text-dim);margin-top:2px}
+.server-ping{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#4ADE80}
+.ping-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-box{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;backdrop-filter:blur(10px)}
+.stat-box .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+.stat-box .value{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--ice)}
+.bottom-nav{height:74px;background:rgba(6,20,35,0.85);backdrop-filter:blur(25px);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:0 10px;z-index:50}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--text-dim);cursor:pointer;transition:all 0.2s ease;padding:6px 12px;border-radius:12px}
+.nav-item svg{width:22px;height:22px;stroke-width:2;transition:all 0.2s ease}
+.nav-item span{font-size:11px;font-weight:500}
+.nav-item.active{color:var(--cyan);background:rgba(76,201,255,0.1)}
+.nav-item.active svg{stroke:var(--cyan);filter:drop-shadow(0 0 8px rgba(76,201,255,0.6))}
+.btn-primary{width:100%;padding:16px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);border:none;color:white;font-weight:700;font-size:15px;letter-spacing:0.03em;cursor:pointer;box-shadow:0 10px 25px rgba(10,132,255,0.4);transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 15px 30px rgba(10,132,255,0.6)}
+.btn-primary:active{transform:translateY(0)}
+.search-box{position:relative;margin-bottom:20px}
+.search-box input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px 14px 44px;color:var(--ice);font-family:'Space Grotesk',sans-serif;font-size:14px;outline:none;transition:all 0.2s ease}
+.search-box input:focus{border-color:var(--primary);background:rgba(10,132,255,0.08);box-shadow:0 0 15px rgba(10,132,255,0.2)}
+.search-box svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--text-dim)}
+.toggle-switch{width:48px;height:26px;background:rgba(255,255,255,0.1);border-radius:15px;position:relative;cursor:pointer;transition:background 0.3s ease;border:1px solid var(--border)}
+.toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:var(--text-dim);border-radius:50%;transition:all 0.3s cubic-bezier(0.16,1,0.3,1)}
+.toggle-switch.active{background:var(--primary);border-color:var(--cyan)}
+.toggle-switch.active::after{left:24px;background:#FFFFFF;box-shadow:0 0 10px rgba(255,255,255,0.8)}
+.setting-item{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;transition:all 0.2s ease}
+.setting-item:hover{border-color:var(--primary-light)}
+.setting-info h4{font-size:15px;font-weight:600;color:var(--ice)}
+.setting-info p{font-size:12px;color:var(--text-dim);margin-top:2px}
+.sub-card{background:linear-gradient(135deg,rgba(10,132,255,0.15) 0%,rgba(76,201,255,0.05) 100%);border:1px solid var(--primary);border-radius:var(--radius-md);padding:24px;text-align:center;position:relative;overflow:hidden;margin-bottom:20px;box-shadow:0 15px 35px rgba(10,132,255,0.2)}
+.badge-pro{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--primary),var(--cyan));color:#030a14;font-size:10px;font-weight:900;font-family:'Orbitron',sans-serif;padding:4px 10px;border-radius:20px;letter-spacing:0.1em}
+.section-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;text-transform:uppercase}
+.flex-row{display:flex;align-items:center;justify-content:space-between}
+.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mb-4{margin-bottom:16px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}.switch-container.connecting .switch-knob,.switch-container.connected .switch-knob{transition-duration:0.01ms!important}}
 </style>
 </head>
 <body>
-
-<!-- Background -->
-<canvas id="bg-canvas"></canvas>
-<div class="blob blob-1"></div>
-<div class="blob blob-2"></div>
-
-<!-- Nav -->
-<header class="nav" id="nav">
-  <div class="wrap nav-inner">
-    <a href="#" class="logo" aria-label="MOR VPN">
-      <img src="logo.png" alt="MOR VPN" class="logo-img">
-      <span class="logo-wordmark">
-        <span class="logo-wordmark-text"><span class="wm-mor">MOR</span><span class="wm-vpn">VPN</span></span>
-        <span class="logo-sub">FAST · SECURE · PRIVATE</span>
-      </span>
-    </a>
-    <nav class="nav-links">
-      <a href="#features">امکانات</a>
-      <a href="#tech">فناوری</a>
-      <a href="#download">دانلود</a>
-      <a href="#faq">سؤالات</a>
-    </nav>
-    <div class="nav-right">
-      <a href="#download" class="nav-cta">دریافت اپ</a>
-      <button class="burger" id="burger" aria-label="منو"><span></span></button>
+<div class="bg-mesh"></div>
+<div class="ambient-glow" style="top:10%;left:20%;"></div>
+<div class="ambient-glow" style="bottom:10%;right:20%;background:radial-gradient(circle,rgba(76,201,255,0.2),transparent 70%);"></div>
+<div class="phone-frame">
+  <div class="status-bar">
+    <span id="clock">09:41</span>
+    <div class="icons">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h.01M2 8c5-5 15-5 20 0M4.5 10.5c3.5-3.5 10.5-3.5 14 0M7 13c2-2 6-2 8 0"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="12" rx="2"/><path d="M22 11h2"/></svg>
     </div>
   </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#features">امکانات</a>
-    <a href="#tech">فناوری</a>
-    <a href="#download">دانلود</a>
-    <a href="#faq">سؤالات</a>
-  </div>
-</header>
-
-<main>
-
-<!-- Hero -->
-<section class="hero">
-  <div class="wrap hero-inner">
-    <div class="hero-text" data-reveal>
-      <span class="eyebrow">Fast · Secure · Private</span>
-      <h1>اینترنت بدون مرز،<br><span class="accent">بدون قطعی و بدون دردسر.</span></h1>
-      <p><span class="wm-mor" style="font-family:var(--orb);font-weight:900">MOR</span><span class="wm-vpn" style="font-family:var(--orb);font-weight:900">VPN</span> یک اتصال روان و خصوصی روی گوشی شما می‌سازد؛ با زیرساختی که برای شرایط شبکه‌ی ایران بهینه شده. فقط یک لمس تا اینترنت آزاد.</p>
-      <div class="hero-actions">
-        <a href="#download" class="btn btn-primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v13m0 0-4.5-4.5M12 16l4.5-4.5M4 20h16"/></svg>
-          دانلود اپلیکیشن
-        </a>
-        <a href="#features" class="btn btn-ghost">مشاهده‌ی امکانات</a>
+  <div class="screen-container">
+    <!-- HOME -->
+    <div class="screen active" id="screen-home">
+      <header class="app-header">
+        <div class="logo-area">
+          <img src="logo.png" alt="MOR VPN" class="brand-logo">
+          <span class="brand-title">MOR VPN</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <div class="icon-btn" onclick="switchScreen('screen-notifications')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+          <div class="icon-btn" onclick="switchScreen('screen-settings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        </div>
+      </header>
+      <div class="server-card" onclick="switchScreen('screen-servers')">
+        <div class="server-info">
+          <div class="server-flag" id="currentFlag">DE</div>
+          <div class="server-details"><h4 id="currentServerName">Frankfurt Pro 03</h4><p id="currentServerRegion">Germany • VLESS Reality</p></div>
+        </div>
+        <div class="server-ping"><span class="ping-dot"></span><span id="currentPing">24ms</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px;"><path d="m9 18 6-6-6-6"/></svg></div>
       </div>
-      <div class="hero-badges">
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 13 4 4L19 7"/></svg> پروتکل <b>VLESS</b> و <b>Trojan</b></span>
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5.5 3.8 9.7 8 10 4.2-.3 8-4.5 8-10V6l-8-4Z"/></svg> رمزنگاری سرتاسری</span>
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m3 3 18 18"/></svg> بدون ثبت لاگ</span>
+      <div class="connect-centerpiece">
+        <div class="logo-wrap"><span class="logo-glow"></span><img class="connect-logo-img" src="logo.png" alt="MOR VPN logo" draggable="false"></div>
+        <div class="connect-title"><span class="t-mor">MOR</span> <span class="t-vpn">VPN</span></div>
+        <div class="switch-container" id="shieldContainer" onclick="toggleConnection()" role="switch" aria-checked="false">
+          <div class="switch-track">
+            <div class="switch-fill"></div>
+            <span class="switch-dot left"></span>
+            <span class="switch-dot right"></span>
+            <div class="switch-knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v9"/><path d="M5.6 6.2a8 8 0 1 0 12.8 0"/></svg></div>
+          </div>
+          <div class="connect-label" id="connectLabel">Connect</div>
+        </div>
+        <div class="connection-status-text" id="connectionStatusText">Protected & Encrypted</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="label">Download</div><div class="value" id="statDownload">142 Mb/s</div></div>
+        <div class="stat-box"><div class="label">Upload</div><div class="value" id="statUpload">48.5 Mb/s</div></div>
+        <div class="stat-box"><div class="label">Duration</div><div class="value" id="statDuration">01:24:18</div></div>
       </div>
     </div>
-    <div class="hero-art" data-reveal>
-      <div class="hero-glow"></div>
-      <span class="ring"></span><span class="ring"></span><span class="ring"></span>
-      <div class="orbit orbit-1"></div>
-      <div class="orbit orbit-2"></div>
-      <div class="hero-logo-wrap">
-        <img src="logo.png" alt="MOR VPN" class="hero-logo-img">
+    <!-- SERVERS -->
+    <div class="screen" id="screen-servers">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">Select Server</span>
+        <div class="icon-btn" onclick="switchScreen('screen-favorites')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      </header>
+      <div class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search country, city or node..." id="serverSearch" oninput="filterServers()"></div>
+      <div class="section-title">Fastest Server</div>
+      <div class="server-card" onclick="selectServer('Frankfurt Pro 03','Germany • VLESS','DE','24ms')" style="border-color:var(--primary);background:rgba(10,132,255,0.08);">
+        <div class="server-info"><div class="server-flag" style="background:linear-gradient(135deg,#0A84FF,#4CC9FF);">DE</div><div class="server-details"><h4>Frankfurt Pro 03 (Auto)</h4><p>Germany • 99.9% Uptime • Low Latency</p></div></div>
+        <div class="server-ping"><span class="ping-dot"></span>24ms</div>
+      </div>
+      <div class="section-title">All Locations</div>
+      <div id="serverListContainer">
+        <div class="server-card" onclick="selectServer('New York Ultra 01','United States • Trojan','US','42ms')"><div class="server-info"><div class="server-flag">US</div><div class="server-details"><h4>New York Ultra 01</h4><p>United States • 10 Gbps Node</p></div></div><div class="server-ping"><span class="ping-dot"></span>42ms</div></div>
+        <div class="server-card" onclick="selectServer('London Gate 02','United Kingdom • VLESS','UK','31ms')"><div class="server-info"><div class="server-flag">UK</div><div class="server-details"><h4>London Gate 02</h4><p>United Kingdom • Optimized Gaming</p></div></div><div class="server-ping"><span class="ping-dot"></span>31ms</div></div>
+        <div class="server-card" onclick="selectServer('Tokyo Apex 01','Japan • VLESS Reality','JP','88ms')"><div class="server-info"><div class="server-flag">JP</div><div class="server-details"><h4>Tokyo Apex 01</h4><p>Japan • Ultra Secure</p></div></div><div class="server-ping"><span class="ping-dot" style="background:#F59E0B;box-shadow:0 0 8px #F59E0B;"></span>88ms</div></div>
+        <div class="server-card" onclick="selectServer('Amsterdam Core 04','Netherlands • Trojan','NL','29ms')"><div class="server-info"><div class="server-flag">NL</div><div class="server-details"><h4>Amsterdam Core 04</h4><p>Netherlands • P2P Friendly</p></div></div><div class="server-ping"><span class="ping-dot"></span>29ms</div></div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Trust bar -->
-<section class="trust">
-  <div class="wrap trust-inner">
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5.5 3.8 9.7 8 10 4.2-.3 8-4.5 8-10V6l-8-4Z"/></svg> <b>رمزنگاری قوی</b></span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg> <b>سرورهای کم‌تأخیر</b></span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> <b>پایداری روزانه</b></span>
-    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h10M4 17h7"/></svg> <b>بدون محدودیت حجم</b></span>
-  </div>
-</section>
-
-<!-- Features -->
-<section class="features" id="features">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <span class="eyebrow">Features</span>
-      <h2>هر چیزی که یک <span class="accent">اتصال خوب</span> لازم دارد</h2>
-      <p>ساده برای کاربر، محکم در زیرساخت. تمام تنظیمات پیچیده را ما انجام داده‌ایم.</p>
+    <!-- FAVORITES -->
+    <div class="screen" id="screen-favorites">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-servers')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">Favorite Nodes</span>
+        <div style="width:40px;"></div>
+      </header>
+      <div class="section-title">Pinned Servers</div>
+      <div class="server-card" onclick="selectServer('Frankfurt Pro 03','Germany • VLESS','DE','24ms')"><div class="server-info"><div class="server-flag">DE</div><div class="server-details"><h4>Frankfurt Pro 03</h4><p>Germany • Primary Gaming Node</p></div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="#4CC9FF" stroke="#4CC9FF" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="server-card" onclick="selectServer('Amsterdam Core 04','Netherlands • Trojan','NL','29ms')"><div class="server-info"><div class="server-flag">NL</div><div class="server-details"><h4>Amsterdam Core 04</h4><p>Netherlands • Streaming Backup</p></div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="#4CC9FF" stroke="#4CC9FF" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
     </div>
-    <div class="feature-grid">
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></div>
-        <h3>سرعت قابل قبول</h3>
-        <p>سرورهای اختصاصی با ظرفیت مناسب؛ استریم، دانلود و مرور روزمره بدون کندی محسوس.</p>
-      </article>
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
-        <h3>حریم خصوصی واقعی</h3>
-        <p>فعالیت شما ذخیره نمی‌شود. ترافیک با رمزنگاری قوی از دید اپراتور پنهان می‌ماند.</p>
-      </article>
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18-3-4-3-14.5 0-18Z"/></svg></div>
-        <h3>مقاوم در برابر فیلترینگ</h3>
-        <p>پروتکل‌هایی که در برابر شناسایی مقاومت دارند؛ حتی در شرایط اختلال شبکه بهتر عمل می‌کنند.</p>
-      </article>
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5v8l-7 5-7-5V8Z"/></svg></div>
-        <h3>مصرف منطقی باتری</h3>
-        <p>طراحی سبک‌وزن؛ اتصال مداوم بدون اینکه باتری گوشی را خیلی زود تمام کند.</p>
-      </article>
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2"/></svg></div>
-        <h3>انتخاب خودکار سرور</h3>
-        <p>اپ کیفیت مسیرهای موجود را می‌سنجد و بهترین گزینه‌ی لحظه‌ای را انتخاب می‌کند.</p>
-      </article>
-      <article class="fcard" data-reveal>
-        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 13 4 4L19 7"/></svg></div>
-        <h3>یک لمس، وصل</h3>
-        <p>بدون کانفیگ دستی و کد اشتراک. نصب کنید، دکمه را بزنید، تمام.</p>
-      </article>
+    <!-- SETTINGS -->
+    <div class="screen" id="screen-settings">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">Settings</span>
+        <div style="width:40px;"></div>
+      </header>
+      <div class="sub-card" onclick="switchScreen('screen-subscription')"><span class="badge-pro">PRO ACTIVE</span><h3 style="font-family:'Orbitron',sans-serif;font-size:16px;color:var(--ice);margin-bottom:4px;">MOR VPN Infinity</h3><p style="font-size:12px;color:var(--text-dim);">Renews in 245 Days • Unlimited 10Gbps</p></div>
+      <div class="section-title">Security & Protocol</div>
+      <div class="setting-item" onclick="toggleSwitch(this)"><div class="setting-info"><h4>Kill Switch</h4><p>Block internet if VPN disconnects</p></div><div class="toggle-switch active"></div></div>
+      <div class="setting-item" onclick="toggleSwitch(this)"><div class="setting-info"><h4>DNS Leak Protection</h4><p>Cloudflare encrypted DNS resolver</p></div><div class="toggle-switch active"></div></div>
+      <div class="setting-item" onclick="switchScreen('screen-protocol')"><div class="setting-info"><h4>Connection Protocol</h4><p>VLESS + Reality (Recommended)</p></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+      <div class="section-title" style="margin-top:16px;">General</div>
+      <div class="setting-item" onclick="toggleSwitch(this)"><div class="setting-info"><h4>Auto-Connect on Startup</h4><p>Connect immediately when app opens</p></div><div class="toggle-switch"></div></div>
+      <div class="setting-item" onclick="switchScreen('screen-subscription')"><div class="setting-info"><h4>Subscription & Billing</h4><p>Manage plan and receipts</p></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
     </div>
-  </div>
-</section>
-
-<!-- Tech -->
-<section class="deep" id="tech">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <span class="eyebrow">Technology</span>
-      <h2>زیر پوست <span class="accent">MOR VPN</span> چه خبر است؟</h2>
-      <p>ترکیبی از پروتکل‌های نسل جدید و مسیریابی هوشمند برای اتصالی پایدار.</p>
+    <!-- PROTOCOL -->
+    <div class="screen" id="screen-protocol">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-settings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">Protocols</span>
+        <div style="width:40px;"></div>
+      </header>
+      <div class="server-card" style="border-color:var(--primary);background:rgba(10,132,255,0.08);"><div class="server-info"><div class="server-flag" style="background:var(--primary);">V</div><div class="server-details"><h4>VLESS + Reality</h4><p>State-of-the-art anti-censorship & zero packet loss</p></div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5"><path d="m5 13 4 4L19 7"/></svg></div>
+      <div class="server-card"><div class="server-info"><div class="server-flag" style="background:#0f3fb8;">T</div><div class="server-details"><h4>Trojan-GFW</h4><p>Mimics HTTPS TLS traffic perfectly</p></div></div></div>
+      <div class="server-card"><div class="server-info"><div class="server-flag" style="background:#1a6fff;">W</div><div class="server-details"><h4>WireGuard Enterprise</h4><p>High speed, ultra-low battery drain</p></div></div></div>
     </div>
-    <div class="deep-panel" data-reveal>
-      <div class="deep-list">
-        <div class="deep-item"><div class="deep-num">01</div><div><h4>VLESS + Reality</h4><p>ترافیک شما شکل یک اتصال معمولی HTTPS را دارد و به‌سختی قابل تشخیص است.</p></div></div>
-        <div class="deep-item"><div class="deep-num">02</div><div><h4>Trojan به‌عنوان مسیر پشتیبان</h4><p>اگر مسیر اصلی دچار اختلال شود، اتصال روی مسیر جایگزین برقرار می‌ماند.</p></div></div>
-        <div class="deep-item"><div class="deep-num">03</div><div><h4>مسیریابی هوشمند</h4><p>سایت‌های داخلی مستقیم باز می‌شوند؛ سرعت داخلی شما تحت تأثیر قرار نمی‌گیرد.</p></div></div>
-        <div class="deep-item"><div class="deep-num">04</div><div><h4>بدون ثبت لاگ</h4><p>تاریخچه‌ی مرور و آدرس IP ذخیره نمی‌شود؛ چیزی برای افشا وجود ندارد.</p></div></div>
-      </div>
-      <div class="terminal" aria-hidden="true">
-        <div class="term-dots"><span></span><span></span><span></span></div>
-        <div class="term-body" id="term"></div>
-      </div>
+    <!-- SUBSCRIPTION -->
+    <div class="screen" id="screen-subscription">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">MOR VIP</span>
+        <div style="width:40px;"></div>
+      </header>
+      <div class="sub-card"><span class="badge-pro">UNLIMITED 2026</span><h2 style="font-family:'Orbitron',sans-serif;font-size:22px;color:#fff;margin:12px 0 6px;">$4.99 <span style="font-size:13px;font-weight:400;color:var(--text-dim);">/ month</span></h2><p style="font-size:13px;color:var(--ice);">Full access to 10Gbps dedicated nodes, unlimited bandwidth & quantum-grade encryption.</p></div>
+      <div class="section-title">Included Benefits</div>
+      <div class="setting-item"><div class="setting-info"><h4>100+ Global Locations</h4><p>Access servers across 45 countries</p></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg></div>
+      <div class="setting-item"><div class="setting-info"><h4>Zero Speed Throttling</h4><p>Uncapped bandwidth for streaming & 4K</p></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg></div>
+      <button class="btn-primary mt-4" onclick="alert('Subscription activated successfully!')">Upgrade to VIP Infinity</button>
+    </div>
+    <!-- NOTIFICATIONS -->
+    <div class="screen" id="screen-notifications">
+      <header class="app-header">
+        <div class="icon-btn" onclick="switchScreen('screen-home')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></div>
+        <span class="brand-title" style="font-size:16px;">Notifications</span>
+        <div style="width:40px;"></div>
+      </header>
+      <div class="setting-item" style="flex-direction:column;align-items:flex-start;gap:6px;"><div style="display:flex;justify-content:space-between;width:100%;align-items:center;"><h4 style="color:var(--cyan);font-size:14px;">Node Update: Frankfurt Pro 03</h4><span style="font-size:11px;color:var(--text-dim);">2m ago</span></div><p style="font-size:13px;color:var(--text-dim);">Server hardware upgraded to 10Gbps NVMe matrix. Enjoy lightning-fast speeds.</p></div>
+      <div class="setting-item" style="flex-direction:column;align-items:flex-start;gap:6px;"><div style="display:flex;justify-content:space-between;width:100%;align-items:center;"><h4 style="color:var(--ice);font-size:14px;">Security Audit Passed</h4><span style="font-size:11px;color:var(--text-dim);">1d ago</span></div><p style="font-size:13px;color:var(--text-dim);">Zero-log compliance verified by independent cyber security agency.</p></div>
     </div>
   </div>
-</section>
-
-<!-- Stats -->
-<section class="stats">
-  <div class="wrap stat-row">
-    <div class="stat-card" data-reveal><div class="num"><span>بالا</span></div><div class="lbl">سرعت روزانه</div></div>
-    <div class="stat-card" data-reveal><div class="num"><span>کم</span></div><div class="lbl">تأخیر در اتصال</div></div>
-    <div class="stat-card" data-reveal><div class="num"><span>صفر</span></div><div class="lbl">لاگ ذخیره‌شده</div></div>
-    <div class="stat-card" data-reveal><div class="num"><span>24</span><span style="font-size:.6em">/7</span></div><div class="lbl">مانیتورینگ سرورها</div></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta">
-  <div class="wrap">
-    <div class="cta-box" data-reveal>
-      <img src="logo.png" alt="MOR VPN" class="cta-logo">
-      <h2>آماده‌ای اینترنت آزاد را تجربه کنی؟</h2>
-      <p>نصب ساده، بدون ثبت‌نام پیچیده. همین الان شروع کن.</p>
-      <a href="#download" class="btn btn-primary" style="padding:17px 40px;font-size:16px;display:inline-flex">دانلود رایگان</a>
-    </div>
-  </div>
-</section>
-
-<!-- Download -->
-<section id="download">
-  <div class="wrap">
-    <div class="dl-hero" data-reveal>
-      <div class="dl-mark">
-        <span class="glow"></span>
-        <img src="logo.png" alt="MOR VPN" class="dl-mark-img">
-      </div>
-      <span class="eyebrow">Download</span>
-      <h2>دانلود <span class="dl-wordmark"><span class="wm-mor">MOR</span><span class="wm-vpn">VPN</span></span></h2>
-      <p>آخرین نسخه‌ی پایدار برای اندروید. نصب مستقیم، بدون فروشگاه.</p>
-    </div>
-    <div class="dl-card" data-reveal>
-      <div class="dl-meta">
-        <div><div class="lbl">Platform</div><div class="val">اندروید ۶ به بالا</div></div>
-        <div><div class="lbl">Version</div><div class="val">1.0.0</div></div>
-        <div><div class="lbl">Size</div><div class="val">~12 MB</div></div>
-      </div>
-      <a href="#" class="btn-download" id="dlBtn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v13m0 0-4.5-4.5M12 16l4.5-4.5M4 20h16"/></svg>
-        دانلود فایل نصبی (APK)
-      </a>
-      <p class="dl-note">فایل مستقیماً از سرور رسمی دریافت می‌شود.</p>
-    </div>
-    <div class="dl-badges" data-reveal>
-      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 13 4 4L19 7"/></svg> بدون تبلیغ</span>
-      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2 4 6v6c0 5.5 3.8 9.7 8 10 4.2-.3 8-4.5 8-10V6l-8-4Z"/></svg> بدون دسترسی اضافی</span>
-      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> به‌روزرسانی مداوم</span>
-    </div>
-    <div class="steps" data-reveal>
-      <h3>سه قدم تا اتصال</h3>
-      <div class="step-list">
-        <div class="step"><div class="step-num">1</div><div><h4>دانلود و نصب</h4><p>فایل APK را دریافت کنید و اجازه‌ی نصب از منابع نامعلوم را تأیید کنید.</p></div></div>
-        <div class="step"><div class="step-num">2</div><div><h4>اجازه‌ی VPN را بدهید</h4><p>در نخستین اجرا، اندروید یک تأیید VPN می‌خواهد؛ گزینه‌ی «تأیید» را بزنید.</p></div></div>
-        <div class="step"><div class="step-num">3</div><div><h4>دکمه‌ی اتصال را لمس کنید</h4><p>سرور مناسب خودکار انتخاب می‌شود و می‌توانید آزادانه مرور کنید.</p></div></div>
-      </div>
-    </div>
-    <div class="faq" id="faq" data-reveal>
-      <h3>سؤالات متداول</h3>
-      <details open><summary>آیا استفاده از اپلیکیشن رایگان است؟</summary><p>نسخه‌ی پایه رایگان است؛ برای سرورهای اختصاصی و کیفیت بالاتر، پلن‌های ویژه هم وجود دارد.</p></details>
-      <details><summary>اطلاعات من ذخیره می‌شود؟</summary><p>خیر. هیچ گزارشی از فعالیت، آدرس IP یا حجم مصرف نگه‌داری نمی‌شود.</p></details>
-      <details><summary>سرعت سایت‌های داخلی کم می‌شود؟</summary><p>نه. مسیریابی هوشمند ترافیک داخلی را مستقیم و خارج از تونل عبور می‌دهد.</p></details>
-      <details><summary>نسخه‌ی iOS هم می‌آید؟</summary><p>بله، نسخه‌های iOS و دسکتاپ در حال آماده‌سازی هستند و به‌زودی منتشر می‌شوند.</p></details>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer>
-  <div class="wrap foot-inner">
-    <a href="#" class="logo" aria-label="MOR VPN">
-      <img src="logo.png" alt="MOR VPN" class="foot-logo-img">
-      <span class="logo-wordmark">
-        <span class="logo-wordmark-text" style="font-size:18px"><span class="wm-mor">MOR</span><span class="wm-vpn">VPN</span></span>
-        <span class="logo-sub">FAST · SECURE · PRIVATE</span>
-      </span>
-    </a>
-    <nav class="foot-links">
-      <a href="#features">امکانات</a>
-      <a href="#tech">فناوری</a>
-      <a href="#download">دانلود</a>
-      <a href="#faq">سؤالات</a>
-    </nav>
-    <div class="foot-copy">© <span id="year"></span> MOR VPN — تمام حقوق محفوظ است.</div>
-  </div>
-</footer>
-
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" onclick="switchScreen('screen-home');setActiveNav(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Connect</span></button>
+    <button class="nav-item" onclick="switchScreen('screen-servers');setActiveNav(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Servers</span></button>
+    <button class="nav-item" onclick="switchScreen('screen-subscription');setActiveNav(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>VIP</span></button>
+    <button class="nav-item" onclick="switchScreen('screen-settings');setActiveNav(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></button>
+  </nav>
+</div>
 <script>
-/* Particle background */
-(function(){
-  const canvas=document.getElementById("bg-canvas");
-  if(!canvas)return;
-  const ctx=canvas.getContext("2d");
-  const reduced=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-  let w=0,h=0,dots=[],mouse={x:-9999,y:-9999},raf=null;
-  const dpr=Math.min(window.devicePixelRatio||1,2);
-
-  function resize(){
-    w=window.innerWidth;h=window.innerHeight;
-    canvas.width=w*dpr;canvas.height=h*dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count=Math.max(30,Math.min(90,Math.round((w*h)/16000)));
-    dots=[];
-    for(let i=0;i<count;i++){
-      dots.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.6+.4,pulse:Math.random()*Math.PI*2});
-    }
-  }
-
-  window.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY});
-
-  function frame(){
-    ctx.clearRect(0,0,w,h);
-    for(let i=0;i<dots.length;i++){
-      const d=dots[i];
-      d.pulse+=.022;
-      const mdx=mouse.x-d.x,mdy=mouse.y-d.y,md=Math.hypot(mdx,mdy);
-      if(md<160){d.vx+=mdx/md*.032;d.vy+=mdy/md*.032;}
-      const sp=Math.hypot(d.vx,d.vy);
-      if(sp>.7){d.vx=d.vx/sp*.7;d.vy=d.vy/sp*.7;}
-      d.x+=d.vx;d.y+=d.vy;
-      if(d.x<0||d.x>w)d.vx*=-1;
-      if(d.y<0||d.y>h)d.vy*=-1;
-      const a=.45+.28*Math.sin(d.pulse);
-      const r=d.r*(1+.18*Math.sin(d.pulse));
-      ctx.beginPath();ctx.arc(d.x,d.y,r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(53,214,255,${a.toFixed(2)})`;ctx.fill();
-      for(let j=i+1;j<dots.length;j++){
-        const o=dots[j];
-        const dist=Math.hypot(d.x-o.x,d.y-o.y);
-        if(dist<120){
-          ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(o.x,o.y);
-          ctx.strokeStyle=`rgba(31,107,255,${((0.22*(1-dist/120))).toFixed(3)})`;
-          ctx.lineWidth=1;ctx.stroke();
-        }
-      }
-    }
-    raf=requestAnimationFrame(frame);
-  }
-
-  resize();
-  window.addEventListener("resize",()=>{if(raf)cancelAnimationFrame(raf);resize();frame();});
-  if(!reduced)frame();else{frame();cancelAnimationFrame(raf);}
-})();
-
-/* Nav scroll */
-const nav=document.getElementById("nav");
-window.addEventListener("scroll",()=>nav.classList.toggle("scrolled",window.scrollY>10));
-
-/* Mobile menu */
-const burger=document.getElementById("burger"),menu=document.getElementById("mobileMenu");
-burger.addEventListener("click",()=>menu.classList.toggle("open"));
-menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>menu.classList.remove("open")));
-
-/* Reveal on scroll */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});
-},{threshold:.1});
-document.querySelectorAll("[data-reveal]").forEach(el=>io.observe(el));
-
-/* Card hover glow */
-document.querySelectorAll(".fcard").forEach(card=>{
-  card.addEventListener("mousemove",ev=>{
-    const r=card.getBoundingClientRect();
-    card.style.setProperty("--mx",(ev.clientX-r.left)+"px");
-    card.style.setProperty("--my",(ev.clientY-r.top)+"px");
-  });
-});
-
-/* Terminal typing */
-(function(){
-  const term=document.getElementById("term");
-  if(!term)return;
-  const lines=[
-    '<span class="tag">$</span> morvpn connect --auto',
-    'scanning nodes ............... <span class="ok">found</span>',
-    'selecting fastest ............ <span class="ok">edge-ir-01</span>',
-    'protocol ..................... VLESS + Reality',
-    'handshake .................... <span class="ok">ok</span>',
-    'encryption ................... AES-256-GCM',
-    'dns leak test ................ <span class="ok">passed</span>',
-    'logging ...................... <span class="ok">disabled</span>',
-    '<span class="ok">● connected — enjoy the open internet.</span>'
-  ];
-  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches){term.innerHTML=lines.join("\n");return;}
-  let li=0;
-  function typeLine(){
-    if(li>=lines.length){setTimeout(()=>{term.innerHTML="";li=0;typeLine();},4500);return;}
-    const plain=lines[li].replace(/<[^>]+>/g,"");
-    let i=0;const base=term.innerHTML;
-    const t=setInterval(()=>{
-      i++;
-      term.innerHTML=base+plain.slice(0,i)+'<span class="cursor"></span>';
-      if(i>=plain.length){
-        clearInterval(t);term.innerHTML=base+lines[li]+"\n";li++;
-        setTimeout(typeLine,li===lines.length?900:280);
-      }
-    },16);
-  }
-  setTimeout(typeLine,700);
-})();
-
-/* Year */
-document.getElementById("year").textContent=new Date().getFullYear();
+setInterval(()=>{const n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false})},1000);
+function switchScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function setActiveNav(btn){document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));btn.classList.add('active')}
+let isConnected=false;
+function toggleConnection(){const shield=document.getElementById('shieldContainer'),label=document.getElementById('connectLabel'),status=document.getElementById('connectionStatusText');if(!isConnected){shield.classList.add('connecting');shield.setAttribute('aria-checked','true');label.textContent='Connecting';setTimeout(()=>{shield.classList.remove('connecting');shield.classList.add('connected');shield.closest('.connect-centerpiece').classList.add('connected');isConnected=true;label.textContent='Connected';status.textContent='Secure Tunnel Active';status.classList.add('connected')},4000)}else{isConnected=false;shield.classList.remove('connected');shield.closest('.connect-centerpiece').classList.remove('connected');shield.setAttribute('aria-checked','false');label.textContent='Connect';status.textContent='Protected & Encrypted';status.classList.remove('connected')}}
+function selectServer(name,region,flag,ping){document.getElementById('currentServerName').textContent=name;document.getElementById('currentServerRegion').textContent=region;document.getElementById('currentFlag').textContent=flag;document.getElementById('currentPing').textContent=ping;switchScreen('screen-home')}
+function toggleSwitch(item){const sw=item.querySelector('.toggle-switch');if(sw)sw.classList.toggle('active')}
+function filterServers(){const q=document.getElementById('serverSearch').value.toLowerCase();document.querySelectorAll('#serverListContainer .server-card').forEach(c=>{c.style.display=c.textContent.toLowerCase().includes(q)?'flex':'none'})}
 </script>
 </body>
 </html>
